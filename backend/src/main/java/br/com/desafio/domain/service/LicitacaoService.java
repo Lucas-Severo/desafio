@@ -27,13 +27,15 @@ public class LicitacaoService {
 	}
 	
 	public Licitacao atualizar(Licitacao licitacao, Long licitacaoId) {
-		Optional<Licitacao> licitacaoExists = licitacaoRepository.findById(licitacaoId);
+		Licitacao licitacaoExists = licitacaoRepository.findById(licitacaoId)
+											.orElseThrow(() -> new RuntimeException("Licitacao nao encontrada"));
 		
-		if(licitacaoExists.isPresent()) {
-			licitacao.setId(licitacaoId);
-			return licitacaoRepository.save(licitacao);
-		}
-		throw new RuntimeException("Licitacao nao existe");
+		if(licitacao.getClassificacao() != null)
+			licitacaoExists.setClassificacao(licitacao.getClassificacao());
+		if(licitacao.getDescricao() != null)
+			licitacaoExists.setDescricao(licitacao.getDescricao());
+		
+		return licitacaoRepository.save(licitacaoExists);
 	}
 	
 }

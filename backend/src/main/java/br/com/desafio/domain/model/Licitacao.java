@@ -18,6 +18,10 @@ public class Licitacao {
 	
 	@Column (name = "classificacao")
 	private ClassificacaoLicitacao classificacao;
+	
+	public Licitacao() {
+		
+	}
 
 	public Long getId() {
 		return id;

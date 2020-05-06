@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.desafio.api.model.LicitacaoODT;
+import br.com.desafio.api.model.LicitacaoInputODT;
 import br.com.desafio.domain.model.Licitacao;
 import br.com.desafio.domain.repository.LicitacaoRepository;
 import br.com.desafio.domain.service.LicitacaoService;
@@ -59,10 +60,11 @@ public class LicitacaoController {
 	
 	@PutMapping("/{licitacaoId}")
 	public ResponseEntity<LicitacaoODT> atualizar(@Valid @PathVariable Long licitacaoId,
-											   @RequestBody Licitacao licitacao) {
+											   @RequestBody LicitacaoInputODT licitacaoInput) {
 		if(!licitacaoRepository.findById(licitacaoId).isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
+		Licitacao licitacao = toEntity(licitacaoInput);
 		licitacao = licitacaoService.atualizar(licitacao, licitacaoId);
 		return ResponseEntity.ok(toModel(licitacao));
 	}
@@ -75,6 +77,10 @@ public class LicitacaoController {
 	
 	private LicitacaoODT toModel(Licitacao licitacao ) {
 		return modelMapper.map(licitacao, LicitacaoODT.class);
+	}
+	
+	private Licitacao toEntity(LicitacaoInputODT licitacao) {
+		return modelMapper.map(licitacao, Licitacao.class);
 	}
 	
 }
