@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,15 @@ public class LicitacaoController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Licitacao incluir(@Valid @RequestBody Licitacao licitacao) {
 		return licitacaoService.incluir(licitacao);
+	}
+	
+	@DeleteMapping("/{licitacaoId}")
+	public ResponseEntity<Licitacao> excluir(@Valid @PathVariable Long licitacaoId) {
+		if(!licitacaoRepository.findById(licitacaoId).isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		licitacaoService.excluir(licitacaoId);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/{licitacaoId}")
