@@ -13,7 +13,7 @@ public class Licitacao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column (name = "descricacao")
+	@Column (name = "descricao")
 	private String descricao;
 	
 	@Column (name = "classificacao")
