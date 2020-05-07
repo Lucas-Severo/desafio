@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -37,4 +40,15 @@ public class PropostaController {
 		return ResponseEntity.ok(propostaService.incluir(proposta));
 	}
 	
+	@PutMapping("/{propostaId}")
+	public ResponseEntity<Proposta> atualizar(@PathVariable Long propostaId,
+			@RequestBody Proposta proposta) {
+		return ResponseEntity.ok(propostaService.atualizar(proposta, propostaId));
+	}
+	
+	@DeleteMapping("/{propostaId}")
+	public ResponseEntity<Void> excluir(@PathVariable Long propostaId) {
+		propostaService.excluir(propostaId);
+		return ResponseEntity.noContent().build();
+	}
 }

@@ -18,4 +18,17 @@ public class PropostaService {
 		return propostaRepository.save(proposta);
 	}
 	
+	public Proposta atualizar(Proposta proposta, Long propostaId) {
+		Proposta propostaExists = propostaRepository.findById(propostaId)
+				.orElseThrow(() -> new RuntimeException("Proposta nao encontrada"));
+		
+		proposta.setId(propostaId);
+		return propostaRepository.save(proposta);
+	}
+	
+	public void excluir(Long propostaId) {
+		Proposta propostaExists = propostaRepository.findById(propostaId)
+				.orElseThrow(() -> new RuntimeException("Proposta nao encontrada"));
+		propostaRepository.delete(propostaExists);
+	}
 }
