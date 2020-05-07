@@ -17,6 +17,8 @@ public class Proposta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	private String fornecedor;
+
 	private BigDecimal nota;
 	
 	private BigDecimal preco;
@@ -35,6 +37,14 @@ public class Proposta {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(String fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 	public BigDecimal getNota() {
