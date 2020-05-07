@@ -61,9 +61,7 @@ public class LicitacaoController {
 	@PutMapping("/{licitacaoId}")
 	public ResponseEntity<LicitacaoODT> atualizar(@Valid @PathVariable Long licitacaoId,
 											   @RequestBody LicitacaoInputODT licitacaoInput) {
-		if(!licitacaoRepository.findById(licitacaoId).isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
+
 		Licitacao licitacao = toEntity(licitacaoInput);
 		licitacao = licitacaoService.atualizar(licitacao, licitacaoId);
 		return ResponseEntity.ok(toModel(licitacao));

@@ -2,6 +2,7 @@ package br.com.desafio.domain.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class Proposta {
 	
 	private BigDecimal preco;
 	
+	@Column(name="data_cadastro")
 	private String dataCadastro;
 	
 	private int classificacao;
