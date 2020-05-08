@@ -60,6 +60,11 @@ public class PropostaController {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@GetMapping("/classificacao/{tipo}")
+	public List<PropostaODT> classificar(@PathVariable int tipo) {
+		return toCollectionModel(propostaService.classificacao(tipo));
+	}
+	
 	private List<PropostaODT> toCollectionModel(List<Proposta> proposta) {
 		return proposta.stream()
 				.map(p -> toModel(p))

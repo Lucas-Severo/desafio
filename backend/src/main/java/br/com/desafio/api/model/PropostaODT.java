@@ -83,7 +83,5 @@ public class PropostaODT {
 	public void setClassificacao(int classificacao) {
 		this.classificacao = classificacao;
 	}
-	
-	
-	
+
 }

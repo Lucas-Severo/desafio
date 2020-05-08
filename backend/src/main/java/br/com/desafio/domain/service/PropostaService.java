@@ -2,13 +2,14 @@ package br.com.desafio.domain.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.desafio.comparators.MenorPrecoComparator;
+import br.com.desafio.comparators.NotaPrecoComparator;
 import br.com.desafio.domain.model.Proposta;
 import br.com.desafio.domain.repository.PropostaRepository;
 
@@ -38,5 +39,19 @@ public class PropostaService {
 		Proposta propostaExists = propostaRepository.findById(propostaId)
 				.orElseThrow(() -> new RuntimeException("Proposta nao encontrada"));
 		propostaRepository.delete(propostaExists);
+	}
+	
+	public List<Proposta> classificacao(int tipo) {
+		List<Proposta> propostas = propostaRepository.findAll();
+		List<Proposta> filtradas = propostas.stream()
+				.filter((proposta) -> {
+					return proposta.getLicitacao().getClassificacao().getValue() == tipo;
+				})
+				.collect(Collectors.toList());
+		if(tipo == 0)
+			filtradas.sort(new MenorPrecoComparator());
+		if(tipo == 1)
+			filtradas.sort(new NotaPrecoComparator());
+		return filtradas;
 	}
 }

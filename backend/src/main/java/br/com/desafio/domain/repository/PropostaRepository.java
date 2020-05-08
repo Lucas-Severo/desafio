@@ -7,5 +7,5 @@ import br.com.desafio.domain.model.Proposta;
 
 @Repository
 public interface PropostaRepository extends JpaRepository<Proposta, Long>{
-
+	
 }
