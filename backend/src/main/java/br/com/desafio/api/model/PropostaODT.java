@@ -8,9 +8,13 @@ public class PropostaODT {
 	
 	private String fornecedor;
 	
+	private BigDecimal nota;
+	
 	private BigDecimal preco;
 	
 	private String dataCadastro;
+	
+	private int classificacao;
 	
 	private Long licitacaoId;
 	
@@ -63,6 +67,23 @@ public class PropostaODT {
 	public void setLicitacaoClassificacao(String licitacaoClassificacao) {
 		this.licitacaoClassificacao = licitacaoClassificacao;
 	}
+
+	public BigDecimal getNota() {
+		return nota;
+	}
+
+	public void setNota(BigDecimal nota) {
+		this.nota = nota;
+	}
+
+	public int getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(int classificacao) {
+		this.classificacao = classificacao;
+	}
+	
 	
 	
 }

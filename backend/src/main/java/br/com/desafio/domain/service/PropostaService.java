@@ -1,5 +1,11 @@
 package br.com.desafio.domain.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+import javax.print.attribute.standard.DateTimeAtCompleted;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +19,9 @@ public class PropostaService {
 	private PropostaRepository propostaRepository;
 	
 	public Proposta incluir(Proposta proposta) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		LocalDateTime date = LocalDateTime.now();
+		proposta.setDataCadastro(formatter.format(date));
 		return propostaRepository.save(proposta);
 	}
 	
@@ -21,6 +30,7 @@ public class PropostaService {
 				.orElseThrow(() -> new RuntimeException("Proposta nao encontrada"));
 		
 		proposta.setId(propostaId);
+		proposta.setDataCadastro(propostaExists.getDataCadastro());
 		return propostaRepository.save(proposta);
 	}
 	
