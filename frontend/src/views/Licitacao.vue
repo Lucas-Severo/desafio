@@ -2,9 +2,9 @@
     <div class="container">
         <div class="options">
             <input type="radio" id="all" name="options" @click="selectOption(1)">
-            <label for="all">Mostrar</label>
+            <label class="option" for="all">Mostrar</label>
             <input type="radio" id="price" name="options" @click="selectOption(2)">  
-            <label for="price">Cadastrar</label>  
+            <label class="option" for="price">Cadastrar</label>  
         </div>
 
         <ul class="licitacoes" v-show="selected == 1">
@@ -23,6 +23,20 @@
                 </div>
             </li>
         </ul>
+
+        <div class="form" v-show="selected == 2">
+            <form action="" methdo="post" @submit.prevent="handleSubmit">
+                <h1 class="form__title">Cadastrar Licitação</h1>
+                <label class="form__text" for="desc">Descrição</label>
+                <input type="text" value="licitacaoDescricao" v-model="licitacaoDescricao" required>
+                <label class="form__text" for="classificacao">Classificação</label>
+                <select v-model="classificacao" required name="classificacao" id="classificacao">
+                    <option value="MENOR_PRECO">Menor Preço</option>
+                    <option value="NOTA_PRECO">Nota Preço</option>
+                </select>
+                <button type="input" class="form__button">Cadastrar</button>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -32,6 +46,8 @@ import api from '../services/api';
 export default {
     data: () => ({
         licitacoes: [],
+        licitacaoDescricao: "",
+        classificacao: null,
         selected: 0
     }),
     methods: {
@@ -44,6 +60,18 @@ export default {
             this.licitacoes = this.licitacoes.filter(proposta => {
                 return proposta.id != id;
             });
+        },
+
+        handleSubmit() {
+            api.post('/licitacao', {
+                "descricao": this.licitacaoDescricao,
+                "classificacao": this.classificacao
+            })
+            .then(response => {
+                this.licitacoes = [...this.licitacoes, response.data]
+            });
+
+            this.selected = 1;
         }
     },
     mounted() {
@@ -64,7 +92,7 @@ export default {
         display: flex;
         justify-content: center;
     }
-    label {
+    label.option {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -123,5 +151,39 @@ export default {
         line-height: 0.9em;
         font-weight: bold;
         text-transform: uppercase;
+    }
+
+    .form {
+        padding-top: 20px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .form form {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .form__text,
+    .form__button {
+        margin-top: 1em;
+    }
+
+    input,
+    select,
+    button {
+        padding: 0.8em;
+    }
+
+    button {
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        background: #00AA00DD;
+        color: #FFF;
+        font-weight: bold;
+        font-size: 1em;
     }
 </style>
