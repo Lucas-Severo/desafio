@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="proposta__options">
-                    <p class="proposta__delete">Excluir</p>
+                    <p class="proposta__delete" @click="handleDelete(proposta.id, proposta.licitacaoClassificacao)">Excluir</p>
                     <p class="proposta__update">Atualizar</p>
                 </div>
             </li>
@@ -57,10 +57,10 @@ export default {
                 this.propostas = this.nota_preco;
             }
             this.selected = option;
-        }
-    },
-    mounted() {
-        api.get('/proposta')
+        },
+
+        getData() {
+            api.get('/proposta')
         .then(response => {
             return response.data;
         })
@@ -77,8 +77,29 @@ export default {
             return response.data;
         })
         .then(response => {this.nota_preco = response})
+        },
+        
+        async handleDelete(id, classificacao) {
+            api.delete(`/proposta/${id}`);
+            this.propostas__saved = this.propostas__saved.filter(proposta => {
+                return proposta.id != id;
+            });
+
+            this.propostas = this.propostas__saved;
+
+            if(classificacao === "MENOR_PRECO")
+                this.menor_preco = this.menor_preco.filter(proposta => {
+                    return proposta.id != id;
+                });
+            else if(classificacao === "NOTA_PRECO")
+                this.nota_preco = this.nota_preco.filter(proposta => {
+                    return proposta.id != id;
+                });
+        }
+    },
+    mounted() {
+        this.getData();
     }
-    
 }
 </script>
 
