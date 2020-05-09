@@ -1,13 +1,127 @@
 <template>
-    <h1>Licitação</h1>
+    <div class="container">
+        <div class="options">
+            <input type="radio" id="all" name="options" @click="selectOption(1)">
+            <label for="all">Mostrar</label>
+            <input type="radio" id="price" name="options" @click="selectOption(2)">  
+            <label for="price">Cadastrar</label>  
+        </div>
+
+        <ul class="licitacoes" v-show="selected == 1">
+            <li class="licitacao" v-for="licitacao in licitacoes" :key="licitacao.id">
+                <div class="licitacao__info">
+                    <div class="licitacao__descricao">
+                        Descrição: {{licitacao.descricao}}
+                    </div>
+                    <div class="licitacao__classificacao">
+                        Classificação: {{ licitacao.classificacao}}
+                    </div>
+                </div>
+                <div class="licitacao__options">
+                    <p class="licitacao__delete" @click="handleDelete(licitacao.id)">Excluir</p>
+                    <p class="licitacao__update">Atualizar</p>
+                </div>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>
+import api from '../services/api';
+
 export default {
-    
+    data: () => ({
+        licitacoes: [],
+        selected: 0
+    }),
+    methods: {
+        selectOption(option) {
+            this.selected = option;
+        },
+
+        async handleDelete(id) {
+            api.delete(`/licitacao/${id}`);
+            this.licitacoes = this.licitacoes.filter(proposta => {
+                return proposta.id != id;
+            });
+        }
+    },
+    mounted() {
+        api.get('/licitacao')
+        .then(response => {
+            return response.data;
+        })
+        .then(response => {this.licitacoes = response})
+    }
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
+    .container {
+        padding: 1em;
+    }
+    .options {
+        display: flex;
+        justify-content: center;
+    }
+    label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 40px;
+        background: #fff;
+        box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    input[name="options"] {
+        visibility: hidden;
+    }
+    input[name="options"]:checked + label{
+        background: #0a0;
+        font-weight: bold;
+        color: #FFF;
+    }
 
+    .licitacoes {
+        padding-top: 1em;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .licitacao {
+       border: 1px solid #ccc;
+       padding: 2em; 
+       background-color: #fff;
+       border-radius: 4px;
+       font-size: 1.2em;
+       position: relative;
+       display: flex;
+       flex-direction: column;
+    }
+
+    .licitacao__info {
+        flex: 1;
+    }
+
+    .licitacao__options {
+        display: flex;
+        padding-top: 20px;
+    }
+
+    .licitacao__delete,
+    .licitacao__update {
+        color: rgba(0, 144, 144, 0.8);
+        cursor: pointer;
+        margin-right: 10px;
+        font-size: 0.9em;
+        line-height: 0.9em;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 </style>
