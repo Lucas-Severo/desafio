@@ -1,6 +1,7 @@
 <template>
     <header class="header">
         <h1 class="title">Desafio</h1>
+        <router-link to="/">Home</router-link>
     </header>
 </template>
 

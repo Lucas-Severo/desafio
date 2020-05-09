@@ -1,19 +1,13 @@
 <template>
     <div class="home">
-        <Header></Header>
-        <h1>Olá</h1>
+        <h1>Teste</h1>
     </div>
 </template>
 
 <script>
 
-import Header from './Header';
-
 export default {
     name: 'Home',
-    components: {
-        Header
-    }
 }
 </script>
 
