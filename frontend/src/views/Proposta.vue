@@ -3,12 +3,14 @@
         <div class="options">
             <input type="radio" id="all" name="options" @click="selectOption(1)">
             <label class="option" for="all">Mostrar</label>
-            <input type="radio" id="price" name="options" @click="selectOption(2)">  
-            <label class="option" for="price">Cadastrar</label>  
+            <input type="radio" id="cadastrar" name="options" @click="selectOption(2)">  
+            <label class="option" for="cadastrar">Cadastrar</label>
+            <input type="radio" id="classificar" name="options" @click="selectOption(3)">  
+            <label class="option" for="classificar">Classificar</label>  
         </div>
 
-        <ul class="propostas" v-show="selected == 1">
-            <li class="proposta" v-for="proposta in propostas" :key="proposta.id">
+        <ul class="propostas" v-show="selected == 1 || selected == 3">
+            <li class="proposta" v-for="proposta in dados" :key="proposta.id">
                 <div class="proposta__info">
                     <div class="proposta__fornecedor">
                         Fornecedor: {{proposta.fornecedor}}
@@ -59,7 +61,9 @@ import api from '../services/api';
 
 export default {
     data: () => ({
+        dados: [],
         propostas: [],
+        propostas__classified: [],
         licitacoes: [],
         fornecedor: "",
         price: null,
@@ -72,6 +76,11 @@ export default {
     methods: {
         selectOption(option) {
             this.selected = option;
+
+            if(option === 1)
+                this.dados = this.propostas;
+            else if(option === 3)
+                this.dados = this.propostas__classified;
         },
         async handleSubmit() {
             await api.post('/proposta', {
@@ -86,6 +95,11 @@ export default {
                 this.propostas = response.data;
             })
 
+            await api.get(`/proposta/classificacao?id=${this.key}`)
+            .then(response => {
+                this.propostas__classified = response.data;
+            })
+
             this.selected = 1;
         },
         handleDelete(id) {
@@ -98,11 +112,17 @@ export default {
     mounted() {
         this.key = this.$route.params.licitacaoId;
         this.tipo = this.$route.params.licitacaoClassificacao;
+
         api.get(`/proposta?id=${this.$route.params.licitacaoId}`)
         .then(response => {
             return response.data;
         })
-        .then(response => {this.propostas = response})
+        .then(response => {this.propostas = response; this.dados = response});
+
+        api.get(`/proposta/classificacao?id=${this.key}`)
+        .then(response => {
+            this.propostas__classified = response.data;
+        });
     }
 }
 </script>

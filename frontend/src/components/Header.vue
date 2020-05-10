@@ -1,9 +1,8 @@
 <template>
     <header class="header">
-        <router-link to="/" class="title">Desafio</router-link>
+        <router-link to="/licitacoes" class="title">Desafio</router-link>
         <nav class="menu">
             <router-link to="/licitacoes">Licitações</router-link>
-            <router-link to="/classificar">Classificar</router-link>
         </nav>
         
     </header>

@@ -70,7 +70,8 @@ public class PropostaController {
 	}
 	
 	@GetMapping("/classificacao")
-	public List<PropostaODT> classificar(@RequestBody Licitacao licitacao) {
+	public List<PropostaODT> classificar(@RequestParam Long id) {
+		Licitacao licitacao = licitacaoService.findById(id);
 		return toCollectionModel(propostaService.classificacao(licitacao));
 	}
 	
