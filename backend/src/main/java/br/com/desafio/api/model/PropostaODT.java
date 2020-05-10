@@ -18,6 +18,8 @@ public class PropostaODT {
 	
 	private Long licitacaoId;
 	
+	private String licitacaoDescricao;
+	
 	private String licitacaoClassificacao;
 
 	public Long getId() {
@@ -74,6 +76,15 @@ public class PropostaODT {
 
 	public void setNota(BigDecimal nota) {
 		this.nota = nota;
+	}
+	
+	
+	public String getLicitacaoDescricao() {
+		return licitacaoDescricao;
+	}
+
+	public void setLicitacaoDescricao(String licitacaoDescricao) {
+		this.licitacaoDescricao = licitacaoDescricao;
 	}
 
 	public int getClassificacao() {

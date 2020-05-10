@@ -17,6 +17,9 @@
                     <div class="proposta__data-cadastro">
                         Data de cadastro: {{ proposta.dataCadastro}}
                     </div>
+                    <div class="licitacao__descricao">
+                        Licitação Descrição: {{ proposta.licitacaoDescricao }}
+                    </div>
                     <div class="proposta__tipo">
                         Tipo de Licitacao: {{ proposta.licitacaoClassificacao }}
                     </div>
