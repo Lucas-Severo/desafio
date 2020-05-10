@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="options">
-            <input type="radio" id="all" name="options" @click="selectOption(1)">
+            <input checked type="radio" id="all" name="options" @click="selectOption(1)">
             <label class="option" for="all">Mostrar</label>
             <input type="radio" id="price" name="options" @click="selectOption(2)">  
             <label class="option" for="price">Cadastrar</label>  
@@ -20,6 +20,7 @@
                 <div class="licitacao__options">
                     <p class="licitacao__delete" @click="handleDelete(licitacao.id)">Excluir</p>
                     <p class="licitacao__update">Atualizar</p>
+                    <p class="licitacao__propostas" @click="showPropostas(licitacao.id, licitacao.classificacao)">Propostas</p>
                 </div>
             </li>
         </ul>
@@ -42,13 +43,14 @@
 
 <script>
 import api from '../services/api';
+import router from '../router';
 
 export default {
     data: () => ({
         licitacoes: [],
         licitacaoDescricao: "",
         classificacao: null,
-        selected: 0
+        selected: 1
     }),
     methods: {
         selectOption(option) {
@@ -72,6 +74,10 @@ export default {
             });
 
             this.selected = 1;
+        },
+
+        showPropostas(licitacaoId, licitacaoClassificacao) {
+            router.push({ name: 'propostas', params: {licitacaoId, licitacaoClassificacao }});
         }
     },
     mounted() {
@@ -116,7 +122,7 @@ export default {
         padding-top: 1em;
         list-style: none;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
         gap: 20px;
         width: 80%;
         margin: 0 auto;
@@ -143,7 +149,8 @@ export default {
     }
 
     .licitacao__delete,
-    .licitacao__update {
+    .licitacao__update,
+    .licitacao__propostas {
         color: rgba(0, 144, 144, 0.8);
         cursor: pointer;
         margin-right: 10px;

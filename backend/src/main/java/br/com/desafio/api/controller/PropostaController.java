@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,7 @@ import br.com.desafio.api.model.PropostaODT;
 import br.com.desafio.domain.model.Licitacao;
 import br.com.desafio.domain.model.Proposta;
 import br.com.desafio.domain.repository.PropostaRepository;
+import br.com.desafio.domain.service.LicitacaoService;
 import br.com.desafio.domain.service.PropostaService;
 
 @RestController
@@ -36,11 +38,15 @@ public class PropostaController {
 	private PropostaService propostaService;
 	
 	@Autowired
+	private LicitacaoService licitacaoService;
+	
+	@Autowired
 	private ModelMapper modelMapper;
 	
 	@GetMapping
-	public List<PropostaODT> listar() {
-		return toCollectionModel(propostaRepository.findAll());
+	public List<PropostaODT> listar(@RequestParam Long id) {
+		Licitacao licitacao = licitacaoService.findById(id);
+		return toCollectionModel(propostaRepository.findByLicitacao(licitacao));
 	}
 	
 	@PostMapping

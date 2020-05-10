@@ -22,7 +22,8 @@ export default new Router({
         {
             path: '/propostas',
             name: 'propostas',
-            component: Proposta
+            component: Proposta,
+            props: true
         },
         {
             path: '/classificar',

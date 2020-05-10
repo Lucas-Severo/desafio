@@ -14,6 +14,10 @@ public class LicitacaoService {
 	@Autowired
 	private LicitacaoRepository licitacaoRepository;
 	
+	public Licitacao findById(Long id) {
+		return licitacaoRepository.findById(id).orElseThrow(() -> new RuntimeException("Licitacao nao encontrada"));
+	}
+	
 	public Licitacao incluir(Licitacao licitacao) {
 		return licitacaoRepository.save(licitacao);
 	}

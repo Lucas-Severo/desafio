@@ -48,10 +48,6 @@
                 <label v-if="tipo.match('NOTA_PRECO')" class="form__text" for="grade">Nota</label>
                 <input v-if="tipo.match('NOTA_PRECO')" type="number" value="nota" step="0.01" id="grade" v-model="nota" required> 
 
-                <label class="form__text" for="classificacao">Licitação</label>
-                <select v-model="tipo" required name="classificacao" id="classificacao">
-                    <option v-for="licitacao in licitacoes" :value="licitacao.classificacao + '/' + licitacao.id" :key="licitacao.id">{{licitacao.descricao}} + {{licitacao.classificacao}}</option>
-                </select>
                 <button type="input" class="form__button">Cadastrar</button>
             </form>
         </div>
@@ -71,14 +67,13 @@ export default {
         tipo: "",
         key: null,
         nota: null,
-        selected: 0
+        selected: 1
     }),
     methods: {
         selectOption(option) {
             this.selected = option;
         },
         async handleSubmit() {
-            this.key = this.tipo.split('/')[1];
             await api.post('/proposta', {
                 "fornecedor": this.fornecedor,
                 "nota": this.nota ? Number(this.nota) : null,
@@ -86,7 +81,7 @@ export default {
                 "licitacaoId": this.key
             })
 
-            await api.get('/proposta')
+            await api.get(`/proposta?id=${this.key}`)
             .then(response => {
                 this.propostas = response.data;
             })
@@ -101,17 +96,13 @@ export default {
         }
     },
     mounted() {
-        api.get('/proposta')
+        this.key = this.$route.params.licitacaoId;
+        this.tipo = this.$route.params.licitacaoClassificacao;
+        api.get(`/proposta?id=${this.$route.params.licitacaoId}`)
         .then(response => {
             return response.data;
         })
         .then(response => {this.propostas = response})
-
-        api.get('/licitacao')
-        .then(response => {
-            return response.data;
-        })
-        .then(response => {this.licitacoes = response})
     }
 }
 </script>
