@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.desafio.api.model.PropostaODT;
+import br.com.desafio.domain.model.Licitacao;
 import br.com.desafio.domain.model.Proposta;
 import br.com.desafio.domain.repository.PropostaRepository;
 import br.com.desafio.domain.service.PropostaService;
@@ -62,9 +63,9 @@ public class PropostaController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@GetMapping("/classificacao/{tipo}")
-	public List<PropostaODT> classificar(@PathVariable int tipo) {
-		return toCollectionModel(propostaService.classificacao(tipo));
+	@GetMapping("/classificacao")
+	public List<PropostaODT> classificar(@RequestBody Licitacao licitacao) {
+		return toCollectionModel(propostaService.classificacao(licitacao));
 	}
 	
 	private List<PropostaODT> toCollectionModel(List<Proposta> proposta) {

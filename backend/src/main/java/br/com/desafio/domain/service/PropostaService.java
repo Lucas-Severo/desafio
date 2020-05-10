@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.desafio.comparators.MenorPrecoComparator;
 import br.com.desafio.comparators.NotaPrecoComparator;
+import br.com.desafio.domain.model.Licitacao;
 import br.com.desafio.domain.model.Proposta;
 import br.com.desafio.domain.repository.PropostaRepository;
 
@@ -41,17 +42,22 @@ public class PropostaService {
 		propostaRepository.delete(propostaExists);
 	}
 	
-	public List<Proposta> classificacao(int tipo) {
-		List<Proposta> propostas = propostaRepository.findAll();
+	public List<Proposta> classificacao(Licitacao licitacao) {
+		List<Proposta> propostas = propostaRepository.findByLicitacao(licitacao);
 		List<Proposta> filtradas = propostas.stream()
 				.filter((proposta) -> {
-					return proposta.getLicitacao().getClassificacao().getValue() == tipo;
+					return proposta.getLicitacao().getClassificacao() == licitacao.getClassificacao();
 				})
 				.collect(Collectors.toList());
-		if(tipo == 0)
+		
+		// MENOR_PRECO
+		if(licitacao.getClassificacao().getValue() == 0)
 			filtradas.sort(new MenorPrecoComparator());
-		if(tipo == 1)
+		
+		// NOTA_PRECO
+		if(licitacao.getClassificacao().getValue() == 1)
 			filtradas.sort(new NotaPrecoComparator());
+		
 		return filtradas;
 	}
 }
