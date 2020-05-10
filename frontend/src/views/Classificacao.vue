@@ -24,10 +24,10 @@
                         Tipo de Licitacao: {{ proposta.licitacaoClassificacao }}
                     </div>
                     <div v-if="proposta.licitacaoClassificacao === 'NOTA_PRECO'" class="proposta__nota">
-                        Nota: {{proposta.nota}}
+                        Nota: {{proposta.nota.toFixed(2)}}
                     </div>
                     <div class="proposta__preco">
-                        Preço: {{proposta.preco}}
+                        Preço: R${{proposta.preco.toFixed(2).replace('.', ',')}}
                     </div>
                 </div>
                 <div class="proposta__options">

@@ -10,19 +10,19 @@ public class NotaPrecoComparator implements Comparator<Proposta> {
 		if(p1.getNota().compareTo(p2.getNota()) > 0)
 			return -1;
 		
-		else if(p1.getPreco().compareTo(p2.getPreco()) < 0)
-			return -1;
-		
-		else if(p1.getDataCadastro().compareTo(p2.getDataCadastro()) < 0)
-			return -1;
-		
 		if(p1.getNota().compareTo(p2.getNota()) < 0)
 			return 1;
 		
-		else if(p1.getPreco().compareTo(p2.getPreco()) > 0)
+		if(p1.getPreco().compareTo(p2.getPreco()) < 0)
+			return -1;
+		
+		if(p1.getPreco().compareTo(p2.getPreco()) > 0)
 			return 1;
 		
-		else if(p1.getDataCadastro().compareTo(p2.getDataCadastro()) > 0)
+		if(p1.getDataCadastro().compareTo(p2.getDataCadastro()) < 0)
+			return -1;
+		
+		if(p1.getDataCadastro().compareTo(p2.getDataCadastro()) > 0)
 			return 1;
 		
 		return 0;

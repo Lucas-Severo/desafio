@@ -3,12 +3,12 @@ package br.com.desafio.domain.model;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Proposta {
@@ -19,8 +19,10 @@ public class Proposta {
 	
 	private String fornecedor;
 
+	@Convert(converter = BigDecimalConverter.class)
 	private BigDecimal nota;
 	
+	@Convert(converter = BigDecimalConverter.class)
 	private BigDecimal preco;
 	
 	@Column(name="data_cadastro")

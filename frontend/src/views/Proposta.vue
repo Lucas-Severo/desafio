@@ -23,10 +23,10 @@
                         Tipo de Licitacao: {{ proposta.licitacaoClassificacao }}
                     </div>
                     <div v-if="proposta.licitacaoClassificacao === 'NOTA_PRECO'" class="proposta__nota">
-                        Nota: {{proposta.nota}}
+                        Nota: {{proposta.nota.toFixed(2)}}
                     </div>
                     <div class="proposta__preco">
-                        Preço: {{proposta.preco}}
+                        Preço: R${{proposta.preco.toFixed(2).replace('.', ',')}}
                     </div>
                 </div>
                 <div class="proposta__options">
@@ -43,10 +43,10 @@
                 <input type="text" value="fornecedor" id="desc" v-model="fornecedor" required>
                 
                 <label class="form__text" for="price">Preço</label>
-                <input type="number" value="price" id="price" v-model="price" required>
+                <input type="number" value="price" id="price" step="0.01" v-model="price" required>
                 
                 <label v-if="tipo.match('NOTA_PRECO')" class="form__text" for="grade">Nota</label>
-                <input v-if="tipo.match('NOTA_PRECO')" type="number" value="nota" id="grade" v-model="nota" required> 
+                <input v-if="tipo.match('NOTA_PRECO')" type="number" value="nota" step="0.01" id="grade" v-model="nota" required> 
 
                 <label class="form__text" for="classificacao">Licitação</label>
                 <select v-model="tipo" required name="classificacao" id="classificacao">
@@ -79,15 +79,16 @@ export default {
         },
         async handleSubmit() {
             this.key = this.tipo.split('/')[1];
-            api.post('/proposta', {
+            await api.post('/proposta', {
                 "fornecedor": this.fornecedor,
+                "nota": this.nota ? Number(this.nota) : null,
                 "preco": this.price,
                 "licitacaoId": this.key
             })
 
             await api.get('/proposta')
             .then(response => {
-                this.propostas = response.data
+                this.propostas = response.data;
             })
 
             this.selected = 1;
